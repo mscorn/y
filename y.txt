@@ -1,0 +1,135 @@
+1
+
+Staff_Evaluations = []
+
+for i in range(6):
+    nama = input("Nama: ")
+    p = float(input("Prestasi: "))
+    while p < 0 or p > 100:
+        p = float(input("Salah! Prestasi: "))
+    k = float(input("Kehadiran: "))
+    while k < 0 or k > 100:
+        k = float(input("Salah! Kehadiran: "))
+
+    akhir = p * 0.6 + k * 0.4
+    if akhir >= 80: 
+        status = "Cemerlang (Elaun RM 500)"
+    elif akhir >= 60:
+        status = "Baik (Elaun RM 250)"
+    else:
+        status = "Perlu Penambahbaikan (Tiada Elaun)"
+    Staff_Evaluations.append([nama, akhir, status])
+
+jumlah = 0
+for s in Staff_Evaluations:
+    print(s[0], s[1], s[2])
+    jumlah += s[1]
+print("Purata:", jumlah / 6)
+ 
+
+2
+
+
+def kira_yuran_bersih(kategori_counts, total_peserta):
+    harga = {"Student": 80, "Profesional": 200, "VIP": 450}
+    kasar = 0
+    for k in kategori_counts:
+        kasar += kategori_counts[k] * harga[k]
+    bersih = kasar
+    if total_peserta >= 3:
+        bersih = kasar * 0.9
+    return kasar, bersih
+
+def main():
+    counts = {"Student": 0, "Profesional": 0, "VIP": 0}
+    n = int(input("Jumlah peserta: "))
+    for i in range(n):
+        kat = input("Kategori: ")
+        while kat not in counts:
+            kat = input("Salah! Kategori: ")
+        counts[kat] += 1
+
+    kasar, bersih = kira_yuran_bersih(counts, n)
+    print(counts)
+    print("Kasar: RM", kasar)
+    print("Diskaun: RM", kasar - bersih)
+    print("Bersih: RM", bersih)
+
+main()
+
+
+3
+
+import streamlit as st
+
+st.title("Kalkulator Ansuran")
+p = st.number_input("Jumlah Pinjaman (RM)")
+r = st.number_input("Kadar Faedah Tahunan (%)")
+t = st.number_input("Tempoh Pinjaman (Tahun)")
+jenis = st.selectbox("Jenis Pinjaman", ["Kenderaan Baharu", "Kenderaan Terpakai", "Pinjaman Peribadi"])
+
+if st.button("Kira Ansuran"):
+    try:
+        if p <= 0 or r <= 0:
+            raise ValueError
+        faedah = p * (r / 100) * t
+        ansuran = (p + faedah) / (t * 12)
+    except ZeroDivisionError:
+        st.error("Tempoh tidak boleh 0!")
+    except ValueError:
+        st.error("Nilai mesti lebih dari 0!")
+    else:
+        st.success(f"Ansuran Bulanan: RM {ansuran:.2f}")
+        st.success(f"Jumlah Bayaran: RM {p + faedah:.2f}")
+
+
+4
+
+import pandas as pd
+import numpy as np
+
+data = {
+    'Order_ID': [101, 102, 103, 101, 104, 105, 106, 107],
+    'Category': ['Electronics', 'Fashion', 'Electronics', 'Electronics', 'Home', 'Fashion', 'Home', 'Electronics'],
+    'Quantity': [2, 5, None, 2, 1, None, 4, 3],
+    'Price_Per_Unit': [1500, 80, 200, 1500, 350, 80, 120, None],
+    'Discount_Rate': [0.10, 0.05, 0.00, 0.10, 0.00, 0.05, 0.15, 0.10]
+}
+df_orders = pd.DataFrame(data)
+
+df_orders = df_orders.drop_duplicates()
+df_orders['Quantity'] = df_orders['Quantity'].fillna(df_orders['Quantity'].median())
+df_orders['Price_Per_Unit'] = df_orders['Price_Per_Unit'].fillna(df_orders['Price_Per_Unit'].mean())
+
+df_orders['Gross_Amount'] = df_orders['Quantity'] * df_orders['Price_Per_Unit']
+df_orders['Net_Amount'] = df_orders['Gross_Amount'] * (1 - df_orders['Discount_Rate'])
+
+tapis = df_orders[(df_orders['Quantity'] >= 2) & (df_orders['Net_Amount'] > 300)]
+print(tapis.sort_values('Net_Amount', ascending=False))
+
+print(df_orders.groupby('Category').agg({'Quantity': 'sum', 'Net_Amount': 'mean'}))
+
+
+
+
+py -m pip list
+python --version
+
+Soalan 1
+python soalan1.py
+
+Soalan 2
+python soalan2.py
+
+Soalan 3
+pip install streamlit
+python -m streamlit run soalan3.py
+
+Soalan 4
+pip install pandas numpy
+python soalan4.py
+
+
+py -m pip install numpy matplotlib
+
+
