@@ -133,3 +133,25 @@ python soalan4.py
 py -m pip install numpy matplotlib
 
 
+ctrl + ~ to vs terminal
+py -3.13 -m pip install pandas numpy streamlit
+winget install Python.Python.3.13
+py -m pip list
+python --version
+
+Soalan 1
+py soalan1.py
+
+Soalan 2
+py soalan2.py
+
+Soalan 3
+pip install streamlit
+py -3.13 -m streamlit run q3.py
+py -m streamlit run soalan3.py
+
+Soalan 4
+py -3.13 q4.py
+pip install pandas numpy
+py -m pip install pandas numpy
+py soalan4.py
